@@ -17,11 +17,11 @@ def load_features():
 
     return database, map_db
 
-def load_index():
-    if retrain:
-        index_path = os.path.join(github_path, 'index', 'feature_paris_clip_3.pkl')
-    else:
-        index_path = os.path.join(github_path, 'index', 'feature_clip.pkl')
+def load_index(index_path):
+    # if retrain:
+    #     index_path = os.path.join(github_path, 'index', 'feature_paris_clip_3.pkl')
+    # else:
+    #     index_path = os.path.join(github_path, 'index', 'feature_clip.pkl')
         
     with open(index_path, 'rb') as f:
         database = pickle.load(f)

@@ -1,4 +1,4 @@
-from GeneralFunction import *
+from .GeneralFunction import *
 
 def process_queries(query_file, device='cpu'):
     """

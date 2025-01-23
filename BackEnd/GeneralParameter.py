@@ -1,4 +1,4 @@
-from Import import *
+from .Import import *
 
 def set_parameter(_k = 6392, _retrain = True, _top_rerank = 10):
     k = _k

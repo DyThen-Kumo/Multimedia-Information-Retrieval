@@ -1,4 +1,4 @@
-from Evaluate import *
+from .Evaluate import *
 
 def merge_results_by_ranx(list_rank_list, list_similarity_matrix, method='rrf'): # Merge kết quả của từng query.
   # Chuyển đổi dữ liệu sang dạng dictionary

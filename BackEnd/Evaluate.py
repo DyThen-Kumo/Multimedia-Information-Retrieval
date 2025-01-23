@@ -1,4 +1,4 @@
-from Retrieval import *
+from .Retrieval import *
 
 def precision(true_positives, retrieved):
   return true_positives / retrieved if retrieved != 0 else 0

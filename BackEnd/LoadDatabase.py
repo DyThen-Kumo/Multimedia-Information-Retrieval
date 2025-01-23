@@ -1,4 +1,4 @@
-from GetInputFeatures import *
+from .GetInputFeatures import *
 
 def load_features():
     database = []

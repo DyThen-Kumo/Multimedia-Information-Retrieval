@@ -1,4 +1,4 @@
-from LoadDatabase import *
+from .LoadDatabase import *
 
 def retrieval_top_k_by_index(query, index, map_db, k=5):
     os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"

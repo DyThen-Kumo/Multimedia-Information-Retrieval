@@ -1,12 +1,12 @@
 from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
-from BackEnd.post_images import *
+from BackEnd.ReRanking import *
 import os
 
 app = Flask(__name__)
 upload_folder = os.path.join('static', 'uploads')
 app.config['UPLOAD_FOLDER'] = upload_folder
-delay_pic = os.path.join(AIC2024_dir,'static','img','avatar.png') # 'D:\CLB-AI\AIC2024\static\img\avatar.png'
+delay_pic = os.path.join(github_path,'static','img','avatar.png') # 'D:\CLB-AI\AIC2024\static\img\avatar.png'
 # Bình thường cần có
 @app.route('/')
 def render_root():
@@ -29,10 +29,6 @@ def render_regular_search():
 def render_relative_search():
     return render_template('Relative-Search.html')
 
-@app.route('/sequence-search')
-def render_sequence_search():
-    return render_template('Sequence-Search.html')
-
 # Tab Generate
 @app.route('/generative-text')
 def render_generative_text():
@@ -42,23 +38,10 @@ def render_generative_text():
 def render_generative_image():
     return render_template('Generative-Image.html')
 
-@app.route('/read-keyframes')
-def render_read_keyframes():
-    return render_template('Read-Keyframes.html')
-
-# Đọc data
-@app.route('/get-read-keyframes', methods=['POST'])
-def get_read_keyframes():
-    video_name = request.form.get('video_name')
-    print(video_name)
-
-    image_files = read_keyframes(video_name=video_name)
-    image_urls = [url for url in image_files]
-    return jsonify(image_urls)
-
 # Quick Answer
 @app.route('/quick-answer', methods=['POST'])
 def quick_answer():
+    return
     submit_name = request.form.get('submit_name')
     video_name = request.form.get('video_name')
     number_start = int(request.form.get('number_start'))
@@ -72,6 +55,7 @@ def quick_answer():
 # Search ảnh
 @app.route('/get-regular-images', methods=['POST'])
 def get_regular_images():
+    return
     num_images = request.form.get('num_images')
     language = request.form.get('language')
     input_text = request.form.get('input_text')
@@ -83,6 +67,7 @@ def get_regular_images():
 
 @app.route('/get-relative-images', methods=['POST'])
 def get_relative_images():
+    return
     image_files = []
     # Đọc dữ liệu từ form
     number_image = request.form.get('number_image')
@@ -105,23 +90,10 @@ def get_relative_images():
         image_urls = [url for url in image_files]
         return jsonify(image_urls)
 
-@app.route('/get-sequence-images', methods=['POST'])
-def get_sequence_images():
-    num_images = request.form.get('num_images')
-    num_querry = request.form.get('num_querry')
-    language = request.form.get('language')
-    input_text = request.form.get('input_text')
-
-    input_data = (num_querry, num_images, language, input_text)
-    print(input_data)
-    image_files = post_sequence_images(input_data)
-    image_urls = [url for url in image_files]
-    return jsonify(image_urls)
-
-
 # Generate ảnh
 @app.route('/get-generative-text', methods=['POST'])
 def get_generative_text():
+    return
     language = request.form.get('language')
     input_text = request.form.get('input_text')
     if language == 'vi':
@@ -132,6 +104,7 @@ def get_generative_text():
 
 @app.route('/get-generative-images', methods=['POST'])
 def get_generative_images():
+    return
         # Đọc file được upload
     file = request.files.get('image')  # Đọc file từ InputImage
     if file:
@@ -149,6 +122,7 @@ def get_generative_images():
 # Tạo file nộp bài
 @app.route('/confirm_selection', methods=['POST'])
 def confirm_selection():
+    return
     selected_images = request.form.getlist('selected_images[]')  # Lấy danh sách các đường dẫn hình ảnh đã chọn
     submit_file_name = request.form.getlist('submit_file_name')[0]
     print('Submit file name:',submit_file_name)

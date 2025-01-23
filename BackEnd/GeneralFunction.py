@@ -1,4 +1,4 @@
-from GeneralParameter import *
+from .GeneralParameter import *
 
 def normalize_data(data):
     # Kiểm tra nếu data là một vector 1 chiều

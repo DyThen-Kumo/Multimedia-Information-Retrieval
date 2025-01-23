@@ -1,13 +1,14 @@
 from .Import import *
 
-def set_parameter(_k = 6392, _retrain = True, _top_rerank = 10):
-    k = _k
+def set_parameter(_load_index=False, _retrain = True, _top_rerank = 10):
+    load_index = _load_index
     retrain = _retrain
     top_rerank = _top_rerank
 
-    return k, retrain, top_rerank
+    return load_index, retrain, top_rerank
 
-k, retrain, top_rerank = set_parameter()
+load_index, retrain, top_rerank = set_parameter()
+index_path = ''
 
 current_file_path = os.path.abspath(__file__)
 github_path = os.path.dirname(os.path.dirname(current_file_path)) # c:\Retrieval System\Multimedia-Information-Retrieval

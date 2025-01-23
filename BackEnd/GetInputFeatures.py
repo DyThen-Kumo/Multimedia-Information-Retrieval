@@ -38,7 +38,7 @@ def process_queries(query_file, device='cpu'):
         
         return features
     
-def get_clip_features(image_paths, device='cpu'):
+def get_image_features(image_paths, device='cpu'):
     features = []
     for image_path in image_paths:
         if not os.path.exists(image_path):
@@ -54,6 +54,14 @@ def get_clip_features(image_paths, device='cpu'):
             features.append(feature)
         
     return features
+
+def get_text_features(texts, device='cpu'):
+    inputs = processor(text=texts, return_tensors="pt", padding=True, truncation=True)
+    with torch.no_grad():
+        feature = model.get_text_features(**inputs) # (batch_size, text_embedding_dim)
+        feature = feature.squeeze().cpu().numpy() 
+
+        return feature
 
 def get_query():
     query = []

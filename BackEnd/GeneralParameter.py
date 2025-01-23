@@ -13,7 +13,8 @@ current_file_path = os.path.abspath(__file__)
 github_path = os.path.dirname(os.path.dirname(current_file_path)) # c:\Retrieval System\Multimedia-Information-Retrieval
 project_path = os.path.dirname(github_path) # c:\Retrieval System\
 gt_path = os.path.join(project_path, 'data', 'paris_120310_gt')
-data_path = os.path.join(project_path, 'data', 'paris')
+data_path = os.path.join(github_path, 'static', 'data', 'paris')
+
 if retrain:
     features_path = os.path.join(project_path, 'features', 'features_paris_clip_3')
 else:

@@ -63,8 +63,8 @@
                 alert(data.error);
               } else {
                 data.forEach(function(urls) {
-                  url = urls.replace(/^.*paris/, 'paris'); // paris/eiffel/name.jpg
-                  const parts = url.split('\\');
+                  urls = urls.replace(/^.*static/, 'static'); // /static/dataparis/eiffel/name.jpg
+                  const parts = urls.split('\\');
                   const image_name = parts[parts.length - 1].split('.')[0];
 
                   //const imgName = urls.replace('D:\\CLB-AI\\AIC2024\\static\\', ''); // Xóa static/ khỏi đường dẫn

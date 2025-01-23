@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, send_file, abort
+from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 from BackEnd.ReRanking import *
 import os
@@ -6,7 +6,14 @@ import os
 app = Flask(__name__)
 upload_folder = os.path.join('static', 'uploads')
 app.config['UPLOAD_FOLDER'] = upload_folder
+
 delay_pic = os.path.join(github_path,'static','img','avatar.png') # 'D:\CLB-AI\AIC2024\static\img\avatar.png'
+
+# Folder chứa ảnh
+IMAGE_FOLDERS = {}
+for folder in os.listdir(data_path):
+    IMAGE_FOLDERS[folder] = os.path.join(data_path, folder)
+
 # Bình thường cần có
 @app.route('/')
 def render_root():
@@ -37,13 +44,6 @@ def render_generative_text():
 @app.route('/generative-image')
 def render_generative_image():
     return render_template('Generative-Image.html')
-
-@app.route('/serve-image/<filename>')
-def serve_image(filename):
-    file_path = os.path.join(data_path, "eiffel", filename)
-    if not os.path.isfile(file_path):
-        return abort(404, "File not found")
-    return send_file(file_path)
 
 # Quick Answer
 @app.route('/quick-answer', methods=['POST'])
@@ -84,7 +84,7 @@ def get_retrieval_by_image():
     # Xử lý dữ liệu và trả về danh sách đường dẫn ảnh
     image_folder = os.path.join(data_path, "eiffel")
     image_files = os.listdir(image_folder)
-    image_urls = [f"/serve-image/{filename}" for filename in image_files]
+    image_urls = [os.path.join(image_folder, name) for name in  image_files]
     return jsonify(image_urls)
 
     image_files = []

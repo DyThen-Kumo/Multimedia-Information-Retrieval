@@ -1,0 +1,200 @@
+body {
+  background-image: url('img/bg.png');
+  /* width: 100%; */
+}
+header {
+  background-image: url('img/bg-navbar.jpg'); 
+  background-size: cover; 
+  background-position: center;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 50px;
+}
+.logo-brand {
+    display: flex;
+    margin-right: 83%;
+}
+/*
+.custom-navbar-brand {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 20px;
+  align-content: center;
+}
+*/
+/*Slidebar*/
+/* The slidebar */
+.slidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #9BD4FA;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+/* Slidebar links */
+.slidebar a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.slidebar a:hover {
+    color: #f1f1f1;
+}
+
+/* Close button */
+.slidebar .closebtn {
+    position: absolute;
+    top: 20px;
+    left: 0px;
+    font-size: 15px;
+    margin-left: 0px;
+}
+
+/* Open button */
+.openbtn {
+    font-size: 15px;
+    cursor: pointer;
+    background-color: rgba(247, 193, 244);
+    color: white;
+    padding: 5px 10px;
+    margin: 10px;
+}
+/* Slidebar open */
+#slidebar.open {
+    width: 250px;
+}
+/*search container*/
+.search {
+    background-color: #95d3fae6 ; 
+    max-width: 750px;
+    align-self: center;
+    /* border-radius: 2.5%; */
+}
+/*image container*/
+.image-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+.image-container img {
+    margin: 10px;
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+}
+
+/*modal to double click*/
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.9);
+}
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    margin-top: 24px;
+    max-width: 700px;
+}
+.modal-content img {
+    width: 100%;
+}
+.modal:hover {
+    cursor: pointer;
+}
+
+/*form*/
+.form-group input {
+        margin-bottom: 10px; /* Thêm khoảng cách 10px giữa các input */
+}
+
+/*imge info*/
+.image-info {
+    margin-top: 5px;
+    text-align: center;
+    overflow: hidden;  /* Ẩn nội dung thừa */
+    white-space: normal;  /* Cho phép xuống dòng */
+    word-wrap: break-word;  /* Ngắt từ khi cần thiết */
+}
+.image-info input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/*confirm button*/
+.confirm-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+#confirmButton {
+    background-color: #007BFF;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-right: 50px;
+}
+#deleteButton {
+    background-color:#95d3faa4;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 50px;
+}
+
+/* Quick Answer */ 
+.quickanswer {
+    height: 360px;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 20px;
+    right: 0;
+    background-color: #9BD4FA;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+/* Slidebar links */
+.quickanswer a {
+    padding: 8px 8px 8px 8px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.quickanswer a:hover {
+    color: #f1f1f1;
+}
+
+/* Close button */
+.quickanswer .closebtn {
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    font-size: 15px;
+    margin-right: 0px;
+}
+
+/* Slidebar open */
+#quickanswer.open {
+    width: 250px;
+}

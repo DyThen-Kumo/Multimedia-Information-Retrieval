@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block tab %}{% endblock %}
+{% block content %}
+<div class="container card" style="margin-top: 20px; margin-bottom: 100px; background-color: #95d3fae6; max-width: 500px; border-radius: 2.5%;">
+  <h1 class="card-title text-center" style="color: #FCCCFC; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">User Manual</h1>
+  <div class="card-body" style="margin-bottom: 10px;">
+    <h2>1, Regular Search</h2>
+    <span class="text-center">- Tìm kiếm bằng câu truy vấn.</span><br>
+    <span class="text-center">- Hãy nhập các tham số cần thiết và thêm câu truy vấn. Câu truy vấn càng chi tiết càng tốt, tuy nhiên, cũng không nên quá phức tạp.</span><br>
+  </div>
+  <div class="card-body" style="margin-bottom: 10px;">
+    <h2>2, Relative Search</h2>
+    <span class="text-center">- Tìm kiếm bằng hình ảnh hoặc đường dẫn.</span><br>
+    <span class="text-center">- Hãy upload hoặc đưa đường dẫn của tấm ảnh để hệ thống tìm kiếm những bức ảnh liên quan.</span><br>
+  </div>
+  <div class="card-body" style="margin-bottom: 10px;">
+    <h2>3, Sequence Search</h2>
+    <span class="text-center">- Tìm kiếm bằng câu truy vấn nhưng làm với nhiều câu.</span><br>
+    <span class="text-center">- Tương tự như tìm kiếm bằng câu truy vấn nhưng mỗi truy vấn là 1 câu được tách biệt bởi 1 dấu "." và trong câu cũng không nên có dấu nháy đơn để tránh lỗi.</span><br>
+  </div>
+</div>
+{% endblock %}

@@ -4,10 +4,10 @@
   <!--Tab-->
   <ul class="nav nav-tabs justify-content-center">
     <li class="nav-item", style="background-color: #95D4FA;">
-      <a class="nav-link active" aria-current="page" href="{{ url_for('render_regular_search') }}">Regular Search</a>
+      <a class="nav-link active" aria-current="page" href="{{ url_for('render_Retrieval_By_Image') }}">Retrieval By Image</a>
     </li>
     <li class="nav-item", style="background-color: #95D4FA;">
-      <a class="nav-link" href="{{ url_for('render_relative_search') }}">Relative Search</a>
+      <a class="nav-link" href="{{ url_for('render_Retrieval_By_Text') }}">Retrieval By Text</a>
     </li>
   </ul>
 {% endblock %}
@@ -15,18 +15,13 @@
   <!--Search-->
   <div class="container search">
     <!--Header-->
-    <h1 class="my-4 text-center" style="color: #FCCCFC; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">REGULAR SEARCH</h1>
+    <h1 class="my-4 text-center" style="color: #FCCCFC; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">RETRIEVAL BY IMAGE</h1>
     <!--Form Input-->
-    <form id="imageForm">
+    <form id="imageForm" method = "POST" enctype="multipart/form-data" action="/get_relative_images">
       <div class="form-group mb-3">
         <label>Enter some parameters:</label>
-        <input type="text" class="form-control" id="InputSubmitName" placeholder="Name of submit file">
         <input type="number" class="form-control mr-3" id="InputNumberImages" placeholder="Number of Images">
-        <select name="language" id="language">
-          <option value="vi">Vietnamese</option>
-          <option value="en">English</option>
-        </select><br><br>
-        <input type="text" class="form-control" id="InputText" placeholder="Input Text">
+        <input type="file" class="form-control mr-3" id="InputImage" name="InputImage" placeholder="Upload image">
         <button type="submit" class="btn btn-primary">Search</button>
       </div>
     </form>
@@ -52,13 +47,11 @@
         event.preventDefault();
 
         const formData = new FormData();
-        formData.append('num_images', $('#InputNumberImages').val());
-        formData.append('submit_name', $('#InputSubmitName').val());
-        formData.append('language', $('#language').val());
-        formData.append('input_text', $('#InputText').val());
+        formData.append('number_image', $('#InputNumberImages').val());
+        formData.append('image', $('#InputImage')[0].files[0]);
         
         $.ajax({
-            url: '/get-regular-images',
+            url: '/get-retrieval-by-image',
             type: 'POST',
             data: formData,
             processData: false,
@@ -70,16 +63,15 @@
                 alert(data.error);
               } else {
                 data.forEach(function(urls) {
-                  urls = urls.replace(/^.*static/, 'static'); // static/data/keyframes/kf_l.../kf/vd_name/kf_id
-                  const parts = urls.split('\\');
-                  const video_name = parts[parts.length - 2];
-                  const keyframes_id = parts[parts.length - 1].split('.')[0];
+                  url = urls.replace(/^.*paris/, 'paris'); // paris/eiffel/name.jpg
+                  const parts = url.split('\\');
+                  const image_name = parts[parts.length - 1].split('.')[0];
 
                   //const imgName = urls.replace('D:\\CLB-AI\\AIC2024\\static\\', ''); // Xóa static/ khỏi đường dẫn
                   const colDiv = $('<div>').addClass('col-md-3'); // 5 hình ảnh trên mỗi hàng
-                  const img = $('<img>').attr('src', urls).attr('alt', `${video_name}, ${keyframes_id}`);
+                  const img = $('<img>').attr('src', urls).attr('alt', `${image_name}`);
                   const checkbox = $('<input>').attr('type', 'checkbox').attr('value', urls);
-                  const infoDiv = $('<div>').addClass('image-info').append(checkbox).append($('<span>').text(`${video_name}, ${keyframes_id}`));
+                  const infoDiv = $('<div>').addClass('image-info').append(checkbox).append($('<span>').text(`${image_name}`));
                   colDiv.append(img).append(infoDiv);
                   imageContainer.append(colDiv);
                 });
@@ -108,8 +100,7 @@
 
         // Gửi danh sách các đường dẫn đã chọn đến server hoặc xử lý theo nhu cầu
         console.log('Selected Images:', selectedImages);
-        console.log('Submit File Name:', submitName);
-        $.post('/confirm_selection', { selected_images: selectedImages, submit_file_name: submitName}, function(response) {
+        $.post('/confirm_selection', { selected_images: selectedImages}, function(response) {
           alert(`Selection confirmed!\nSubmit File Name: ${submitName}`);
           console.log(response);
         });

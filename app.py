@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file, abort
 from werkzeug.utils import secure_filename
 from BackEnd.ReRanking import *
 import os
@@ -21,13 +21,13 @@ def render_about():
     return render_template('about.html')
 
 # Tab Search
-@app.route('/regular-search')
-def render_regular_search():
-    return render_template('Regular-Search.html')
+@app.route('/Retrieval_By_Text')
+def render_Retrieval_By_Text():
+    return render_template('Retrieval-By-Text.html')
 
-@app.route('/relative-search')
-def render_relative_search():
-    return render_template('Relative-Search.html')
+@app.route('/Retrieval_By_Image')
+def render_Retrieval_By_Image():
+    return render_template('Retrieval-By-Image.html')
 
 # Tab Generate
 @app.route('/generative-text')
@@ -37,6 +37,13 @@ def render_generative_text():
 @app.route('/generative-image')
 def render_generative_image():
     return render_template('Generative-Image.html')
+
+@app.route('/serve-image/<filename>')
+def serve_image(filename):
+    file_path = os.path.join(data_path, "eiffel", filename)
+    if not os.path.isfile(file_path):
+        return abort(404, "File not found")
+    return send_file(file_path)
 
 # Quick Answer
 @app.route('/quick-answer', methods=['POST'])
@@ -53,9 +60,16 @@ def quick_answer():
     return jsonify("message: Form submitted successfully!")
 
 # Search ảnh
-@app.route('/get-regular-images', methods=['POST'])
-def get_regular_images():
-    return
+@app.route('/get-retrieval-by-text', methods=['POST'])
+def get_retrieval_by_text():
+    image_files = []
+    path = r'C:\Retrieval System\Multimedia-Information-Retrieval\static\img'
+    for image in os.listdir(path):
+        image_files.append(os.path.join(path, image))
+
+    image_urls = [url for url in image_files]
+    return jsonify(image_urls)
+
     num_images = request.form.get('num_images')
     language = request.form.get('language')
     input_text = request.form.get('input_text')
@@ -65,9 +79,14 @@ def get_regular_images():
     image_urls = [url for url in image_files]
     return jsonify(image_urls)
 
-@app.route('/get-relative-images', methods=['POST'])
-def get_relative_images():
-    return
+@app.route('/get-retrieval-by-image', methods=['POST'])
+def get_retrieval_by_image():
+    # Xử lý dữ liệu và trả về danh sách đường dẫn ảnh
+    image_folder = os.path.join(data_path, "eiffel")
+    image_files = os.listdir(image_folder)
+    image_urls = [f"/serve-image/{filename}" for filename in image_files]
+    return jsonify(image_urls)
+
     image_files = []
     # Đọc dữ liệu từ form
     number_image = request.form.get('number_image')

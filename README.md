@@ -5,7 +5,7 @@
 ## Introduction
 * Subject name: MULTIMEDIA INFORMATION RETRIEVAL
 * Class code: CS336.P11.KHTN
-* Semester: Học kỳ 5 (2024-2025)
+* Semester: 5 (2024-2025)
 
 ### Lecturer
 * PhD. Ngo Duc Thanh - thanhnd@gm.uit.edu.vn

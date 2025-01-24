@@ -18,22 +18,25 @@ def merge_results_by_ranx(list_rank_list, list_similarity_matrix, method='rrf'):
 
   return fused_ranking_results['query_0']
 
-def get_new_ranklist_by_features(query, database, rank_list):
-    new_rank_list = []
-    for i in range(len(query)):
-        new_query = np.array(get_clip_features(get_path(rank_list[i][:top_rerank])))
-        list_rank_list, list_similarity_matrix = retrieval_top_k_by_features(query=new_query, database=database, k=k)
-        each_rank_list = merge_results_by_ranx(list_rank_list, list_similarity_matrix, method='med')
-        new_rank_list.append(each_rank_list)
+def get_new_ranklist_by_features(list_images, database, map_db, k):
+    # new_rank_list = []
 
-    return new_rank_list
+    new_query = np.array(get_image_features(get_path(list_images)))
+    print('New query shape:', new_query.shape)
+    print('Database shape: ', database.shape)
+    list_rank_list, list_similarity_matrix = retrieval_top_k_by_features(query=new_query, database=database, map_db=map_db, k=k)
+    new_rank_list = merge_results_by_ranx(list_rank_list, list_similarity_matrix, method='mnz')
+    # new_rank_list.append(each_rank_list)
 
-def get_new_ranklist_by_index(query, index, rank_list):
-    new_rank_list = []
-    for i in range(len(query)):
-        new_query = np.array(get_clip_features(get_path(rank_list[i][:top_rerank])))
-        list_rank_list, list_similarity_matrix = retrieval_top_k_by_index(query=new_query, index=index, k=k)
-        each_rank_list = merge_results_by_ranx(list_rank_list, list_similarity_matrix, method='med')
-        new_rank_list.append(each_rank_list)
+    return new_rank_list[:k]
 
-    return new_rank_list
+def get_new_ranklist_by_index(list_images, index, map_index, k):
+    # new_rank_list = []
+
+    new_query = np.array(get_image_features(get_path(list_images)))
+    print('New query shape:', new_query.shape)
+    list_rank_list, list_similarity_matrix = retrieval_top_k_by_index(query=new_query, index=index, map_db=map_index, k=k)
+    new_rank_list = merge_results_by_ranx(list_rank_list, list_similarity_matrix, method='mnz')
+    # new_rank_list.append(each_rank_list)
+
+    return new_rank_list[:k]

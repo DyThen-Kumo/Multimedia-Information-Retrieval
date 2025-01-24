@@ -21,10 +21,56 @@
       <div class="form-group mb-3">
         <label>Enter some parameters:</label>
         <input type="number" class="form-control mr-3" id="InputNumberImages" placeholder="Number of Images">
-        <input type="file" class="form-control mr-3" id="InputImage" name="InputImage" placeholder="Upload image">
+        <input type="file" class="form-control mr-3" id="InputImage" name="InputImage" placeholder="Upload image">       
         <button type="submit" class="btn btn-primary">Search</button>
       </div>
     </form>
+    <div id="uploadedImageContainer" class="d-flex justify-content-center align-items-center flex-column">
+      <label id="queryImage" style="display: none;">QUERY IMAGE</label>
+      <img id="uploadedImage" src="" alt="Uploaded Image" style="max-height: 300px; display: none;">
+      <hr id="imageSeparator" style="display: none; border: 1px solid #FCCCFC; width: 100%;">
+    </div>
+    
+    <!-- Hiển thị ảnh upload -->
+    <script>
+      document.getElementById('imageForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form from submitting traditionally
+    
+        const formData = new FormData(this);
+        const fileInput = document.getElementById('InputImage');
+    
+        if (fileInput.files.length === 0) {
+          alert('Please select a file!');
+          return;
+        }
+    
+        // Make an AJAX request to upload the image
+        fetch('/upload-image', {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.url) {
+              const uploadedImage = document.getElementById('uploadedImage');
+              const imageSeparator = document.getElementById('imageSeparator');
+              const queryImage = document.getElementById('queryImage');
+    
+              // Update image attributes
+              uploadedImage.src = data.url;
+              uploadedImage.style.display = 'block'; // Display the image
+    
+              // Display separator line
+              imageSeparator.style.display = 'block';
+              queryImage.style.display = 'block';
+            } else {
+              alert('Failed to upload the image.');
+            }
+          })
+      });
+    </script>
+
+
     <div class="image-container row" id="imageContainer"></div>
     <!--Confirm Button-->
     <div class="confirm-container">
@@ -69,7 +115,7 @@
 
                   //const imgName = urls.replace('D:\\CLB-AI\\AIC2024\\static\\', ''); // Xóa static/ khỏi đường dẫn
                   const colDiv = $('<div>').addClass('col-md-3'); // 5 hình ảnh trên mỗi hàng
-                  const img = $('<img>').attr('src', urls).attr('alt', `${image_name}`);
+                  const img = $('<img>').attr('src', urls).attr('alt', `${image_name}`).css('max-height', '300px');
                   const checkbox = $('<input>').attr('type', 'checkbox').attr('value', urls);
                   const infoDiv = $('<div>').addClass('image-info').append(checkbox).append($('<span>').text(`${image_name}`));
                   colDiv.append(img).append(infoDiv);
@@ -91,20 +137,51 @@
       });
 
       // Click confirm, gửi tên file về sever.
-      $('#confirmButton').click(function() {
-        const selectedImages = [];
-        $('#imageContainer input[type="checkbox"]:checked').each(function() {
-          selectedImages.push($(this).val());
-        });
-        const submitName = $('#InputSubmitName').val();
-
-        // Gửi danh sách các đường dẫn đã chọn đến server hoặc xử lý theo nhu cầu
-        console.log('Selected Images:', selectedImages);
-        $.post('/confirm_selection', { selected_images: selectedImages}, function(response) {
-          alert(`Selection confirmed!\nSubmit File Name: ${submitName}`);
-          console.log(response);
-        });
+      $(document).ready(function() {
+    // Click confirm, gửi tên file về server
+    $('#confirmButton').click(function() {
+      const selectedImages = [];
+      
+      // Lấy danh sách các ảnh đã chọn
+      $('#imageContainer input[type="checkbox"]:checked').each(function() {
+        selectedImages.push($(this).val());
       });
+
+      const numberImages = $('#InputNumberImages').val(); // Lấy số lượng ảnh
+      $('#imageContainer').empty(); // Xóa ảnh cũ
+
+      // Gửi dữ liệu về server
+      $.post('/confirm_selection', { 
+        selected_images: selectedImages, 
+        number_images: numberImages 
+      }, function(response) {
+        // Xử lý phản hồi từ server
+        if (response.error) {
+          alert(response.error); // Hiển thị lỗi nếu có
+        } else {
+          const imageContainer = $('#imageContainer');
+          imageContainer.empty(); // Xóa ảnh cũ
+
+          // Hiển thị danh sách ảnh mới từ server
+          response.forEach(function(urls) {
+            urls = urls.replace(/^.*static/, 'static');
+            const parts = urls.split('\\');
+            const imageName = parts[parts.length - 1].split('.')[0];
+
+            const colDiv = $('<div>').addClass('col-md-3'); // Tạo khung ảnh
+            const img = $('<img>').attr('src', urls).attr('alt', `${imageName}`).css('max-height', '300px');
+            const checkbox = $('<input>').attr('type', 'checkbox').attr('value', urls);
+            const infoDiv = $('<div>').addClass('image-info').append(checkbox).append($('<span>').text(`${imageName}`));
+            colDiv.append(img).append(infoDiv);
+            imageContainer.append(colDiv);
+          });
+        }
+      }).fail(function(xhr, status, error) {
+        console.error("Error: ", error); // Log lỗi nếu có
+        alert('Đã xảy ra lỗi trong quá trình gửi yêu cầu!');
+      });
+    });
+  });
         // Click delete, xoá ảnh.
       $('#deleteButton').click(function() {
         $('#imageContainer').empty()

@@ -52,12 +52,11 @@
         event.preventDefault();
 
         const formData = new FormData();
-        formData.append('num_images', $('#InputNumberImages').val());
-        formData.append('language', $('#language').val());
-        formData.append('input_text', $('#InputText').val());
+        formData.append('number_image', $('#InputNumberImages').val());
+        formData.append('image', $('#InputImage')[0].files[0]);
         
         $.ajax({
-            url: '/get-retrieval-by-text',
+            url: '/get-retrieval-by-image',
             type: 'POST',
             data: formData,
             processData: false,
@@ -75,7 +74,7 @@
 
                   //const imgName = urls.replace('D:\\CLB-AI\\AIC2024\\static\\', ''); // Xóa static/ khỏi đường dẫn
                   const colDiv = $('<div>').addClass('col-md-3'); // 5 hình ảnh trên mỗi hàng
-                  const img = $('<img>').attr('src', urls).attr('alt', `${image_name}`);
+                  const img = $('<img>').attr('src', urls).attr('alt', `${image_name}`).css('max-height', '300px');
                   const checkbox = $('<input>').attr('type', 'checkbox').attr('value', urls);
                   const infoDiv = $('<div>').addClass('image-info').append(checkbox).append($('<span>').text(`${image_name}`));
                   colDiv.append(img).append(infoDiv);
@@ -97,21 +96,51 @@
       });
 
       // Click confirm, gửi tên file về sever.
-      $('#confirmButton').click(function() {
-        const selectedImages = [];
-        $('#imageContainer input[type="checkbox"]:checked').each(function() {
-          selectedImages.push($(this).val());
-        });
-        const submitName = $('#InputSubmitName').val();
-
-        // Gửi danh sách các đường dẫn đã chọn đến server hoặc xử lý theo nhu cầu
-        console.log('Selected Images:', selectedImages);
-        console.log('Submit File Name:', submitName);
-        $.post('/confirm_selection', { selected_images: selectedImages, submit_file_name: submitName}, function(response) {
-          alert(`Selection confirmed!\nSubmit File Name: ${submitName}`);
-          console.log(response);
-        });
+      $(document).ready(function() {
+    // Click confirm, gửi tên file về server
+    $('#confirmButton').click(function() {
+      const selectedImages = [];
+      
+      // Lấy danh sách các ảnh đã chọn
+      $('#imageContainer input[type="checkbox"]:checked').each(function() {
+        selectedImages.push($(this).val());
       });
+
+      const numberImages = $('#InputNumberImages').val(); // Lấy số lượng ảnh
+      $('#imageContainer').empty(); // Xóa ảnh cũ
+
+      // Gửi dữ liệu về server
+      $.post('/confirm_selection', { 
+        selected_images: selectedImages, 
+        number_images: numberImages 
+      }, function(response) {
+        // Xử lý phản hồi từ server
+        if (response.error) {
+          alert(response.error); // Hiển thị lỗi nếu có
+        } else {
+          const imageContainer = $('#imageContainer');
+          imageContainer.empty(); // Xóa ảnh cũ
+
+          // Hiển thị danh sách ảnh mới từ server
+          response.forEach(function(urls) {
+            urls = urls.replace(/^.*static/, 'static');
+            const parts = urls.split('\\');
+            const imageName = parts[parts.length - 1].split('.')[0];
+
+            const colDiv = $('<div>').addClass('col-md-3'); // Tạo khung ảnh
+            const img = $('<img>').attr('src', urls).attr('alt', `${imageName}`).css('max-height', '300px');
+            const checkbox = $('<input>').attr('type', 'checkbox').attr('value', urls);
+            const infoDiv = $('<div>').addClass('image-info').append(checkbox).append($('<span>').text(`${imageName}`));
+            colDiv.append(img).append(infoDiv);
+            imageContainer.append(colDiv);
+          });
+        }
+      }).fail(function(xhr, status, error) {
+        console.error("Error: ", error); // Log lỗi nếu có
+        alert('Đã xảy ra lỗi trong quá trình gửi yêu cầu!');
+      });
+    });
+  });
         // Click delete, xoá ảnh.
       $('#deleteButton').click(function() {
         $('#imageContainer').empty()

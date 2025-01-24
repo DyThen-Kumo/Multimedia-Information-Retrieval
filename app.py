@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, url_for
 from BackEnd.SearchEngine import *
 import os
 
@@ -44,16 +44,53 @@ def render_generative_text():
 def render_generative_image():
     return render_template('Generative-Image.html')
 
+@app.route('/upload-image', methods=['POST'])
+def upload_image():
+    if 'InputImage' not in request.files:
+        return jsonify({'error': 'No file part'})
+
+    file = request.files['InputImage']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'})
+
+    # Save the file
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(file_path)
+
+    # Return the URL of the uploaded file
+    file_url = url_for('static', filename=f'uploads/{file.filename}')
+    return jsonify({'url': file_url})
+
 # Quick Answer
-@app.route('/quick-answer', methods=['POST'])
-def quick_answer():
-    return
-    submit_name = request.form.get('submit_name')
-    video_name = request.form.get('video_name')
-    number_start = int(request.form.get('number_start'))
-    number_end = int(request.form.get('number_end'))
+@app.route('/change-parameter', methods=['POST'])
+def change_parameter():
+    global use_index
+    global retrain
+    global top_rerank
+    global index_path
+    global features_path
+    global model
+
+    _use_Index = request.form.get('useIndex') == 'true'
+    _linkIndex = request.form.get('linkIndex')
+    _retrain = request.form.get('retrain') == 'true'
+    _topReRank = int(request.form.get('topReRank')) if request.form.get('topReRank') else top_rerank
     
-    add_quick_answer(submit_name, video_name, number_start, number_end)
+    use_index, retrain, top_rerank = set_parameter(_use_Index, _retrain, _topReRank)
+    if use_index:
+        index_path = _linkIndex
+
+    print(1, _use_Index, 2, _retrain, 3, _topReRank, 4, _linkIndex)
+    print(11, use_index, 22, retrain, 33, top_rerank, 44, index_path)
+
+    if retrain:
+        features_path = os.path.join(project_path, 'features', 'features_paris_clip_3')
+        print('Model đã retrain!!')
+        model = torch.load(r'C:\Retrieval System\model\paris_clip_3.pth', map_location=torch.device('cpu'))
+    else:
+        features_path = os.path.join(project_path, 'features', 'features_clip')
+        model = CLIPModel.from_pretrained('openai/clip-vit-base-patch32')
+    model.eval()
 
     # Trả về phản hồi thành công cho front-end
     return jsonify("message: Form submitted successfully!")
@@ -97,18 +134,13 @@ def get_retrieval_by_image():
 # Tạo file nộp bài
 @app.route('/confirm_selection', methods=['POST'])
 def confirm_selection():
-    return
     selected_images = request.form.getlist('selected_images[]')  # Lấy danh sách các đường dẫn hình ảnh đã chọn
-    submit_file_name = request.form.getlist('submit_file_name')[0]
-    print('Submit file name:',submit_file_name)
-    try:
-        # Xử lý danh sách các đường dẫn hình ảnh đã chọn
-        print('Selected Images:', selected_images)
-        submit(answer=selected_images, name=submit_file_name)
-        # Thực hiện các hành động cần thiết với danh sách này
-        return jsonify({'message': 'Selection received', 'submit_file_name': submit_file_name})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    number_images = int(request.form.getlist('number_images')[0])
+
+    print(selected_images, number_images)
+    image_files = post_rerank(list_images=selected_images, k=number_images)
+    image_urls = [url for url in image_files]
+    return jsonify(image_urls)
 
 if __name__ == '__main__':
     app.run(debug=True)

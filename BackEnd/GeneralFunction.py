@@ -21,9 +21,8 @@ def load_file_lines(file_path):
     
 def get_path(list_image):
     results = []
-    for name in list_image:
-        folder = name.split('_')[1]
-        image_path = os.path.join(data_path, folder, f'{name}.jpg')
+    for link in list_image:
+        image_path = os.path.join(github_path, link)
         results.append(image_path)
 
     return results

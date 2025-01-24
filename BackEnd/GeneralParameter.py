@@ -1,20 +1,17 @@
 from .Import import *
 
-def set_parameter(_load_index=False, _retrain = True, _top_rerank = 10):
-    load_index = _load_index
-    retrain = _retrain
-    top_rerank = _top_rerank
-
-    return load_index, retrain, top_rerank
-
-load_index, retrain, top_rerank = set_parameter()
-index_path = ''
-
 current_file_path = os.path.abspath(__file__)
 github_path = os.path.dirname(os.path.dirname(current_file_path)) # c:\Retrieval System\Multimedia-Information-Retrieval
 project_path = os.path.dirname(github_path) # c:\Retrieval System\
 gt_path = os.path.join(project_path, 'data', 'paris_120310_gt')
 data_path = os.path.join(github_path, 'static', 'data', 'paris')
+
+def set_parameter(_use_index = False, _retrain = False, _top_rerank = 10):
+    return _use_index, _retrain, _top_rerank
+
+use_index, retrain, top_rerank = set_parameter()
+print(use_index, retrain, top_rerank)
+index_path = os.path.join(github_path, 'index', 'feature_clip.pkl')
 
 if retrain:
     features_path = os.path.join(project_path, 'features', 'features_paris_clip_3')
@@ -24,7 +21,9 @@ else:
 
 processor = CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')
 
+model = None
 if retrain:
+    print('Model đã re train!!')
     model = torch.load(r'C:\Retrieval System\model\paris_clip_3.pth', map_location=torch.device('cpu'))
 else:
     model = CLIPModel.from_pretrained('openai/clip-vit-base-patch32')

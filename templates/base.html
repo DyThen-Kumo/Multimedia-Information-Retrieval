@@ -19,7 +19,7 @@
         
       </div>
     </div>
-    <span class="openbtn" onclick="openQuickAnswer()">QA </span>
+    <!-- <span class="openbtn" onclick="openQuickAnswer()">QA </span> -->
   </header>
   <!--Slidebar-->
   <div id="slidebar" class="slidebar">
@@ -43,55 +43,67 @@
         document.getElementById("main-content").style.marginLeft = "0";
     }
   </script>
-  <!-- Quick Answer -->
+  <!-- Quick Answer
   <div id="quickanswer" class="quickanswer">
     <div class="container">
-      <h2 style="color: #FCCCFC; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; font-size: 24px; text-align: center;">Quick Answer</h2>
+      <h2 style="color: #FCCCFC; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; font-size: 24px; text-align: center;">CHANGE PARAMETERS</h2>
       <a href="javascript:void(0)" class="closebtn" onclick="closeQuickAnswer()">☰</a>
     </div>
 
-    <form id="QuickAnswer">
+    <form id="ChangParameter">
       <div class="form-group mb-3 ml-3 mr-3">
-        <input type="text" class="form-control" id="InputQuickSubmitName" placeholder="Name of submit file">
-        <input type="text" class="form-control" id="InputQuickVideoName" placeholder="Name of video">
-        <input type="number" class="form-control mr-3" id="InputNumberStart" placeholder="Number start">
-        <input type="number" class="form-control mr-3" id="InputNumberEnd" placeholder="Number end">
+        <label for="useIndex">Use Index:</label>
+          <select class="form-control mb-3 mr-6" id="useIndex" name="useIndex">
+            <option value="false">False</option>
+            <option value="true">True</option>    
+          </select>
+
+        <input type="text" class="form-control mb-3 mr-6" id="linkIndex" placeholder="Link File Index">
+        
+        <label for="retrain">Retrain:</label>          
+          <select class="form-control mb-3 mr-6" id="retrain" name="retrain">
+            <option value="false">False</option>
+            <option value="true">True</option>
+          </select>
+        
+          <label for="reranking">Reranking:</label>  
+        <input type="number" class="form-control mb-3 mr-6" id="topReRank" placeholder="Number for ReRanking">
         <div class="text-center">
-          <button type="submit" class="btn btn-primary">Add</button>
+          <button type="submit" class="btn btn-primary">CHANGE</button>
         </div>
       </div>
-    </form>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </form> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
       $(document).ready(function() {
-        $('#QuickAnswer').on('submit', function(event) {
+        $('#ChangParameter').on('submit', function(event) {
           event.preventDefault(); // Ngăn chặn hành động submit form mặc định
     
           // Lấy dữ liệu từ form
           const formData = new FormData();
-          formData.append('submit_name', $('#InputQuickSubmitName').val());
-          formData.append('video_name', $('#InputQuickVideoName').val());
-          formData.append('number_start', $('#InputNumberStart').val());
-          formData.append('number_end', $('#InputNumberEnd').val());
+          formData.append('useIndex', $('#useIndex').val());
+          formData.append('linkIndex', $('#linkIndex').val());
+          formData.append('retrain', $('#retrain').val());
+          formData.append('topReRank', $('#topReRank').val());
     
           // Gửi dữ liệu qua AJAX
           $.ajax({
-            url: '/quick-answer',
+            url: '/change-parameter',
             type: 'POST',
             data: formData,
             processData: false,
             contentType: false,
             success: function(response) {
-              alert('Add quick answer successfully!');
+              alert('Change parameter successfully!');
               console.log(response);
               }
             });
         });
       });
-      </script>
+      </script> -->
     
-  </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- </div> -->
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
         // Quick Answer animation
         function openQuickAnswer() {
@@ -103,11 +115,12 @@
         document.getElementById("quickanswer").classList.remove('open');
         document.getElementById("main-content").style.marginRight = "0";
     }
-  </script>
+  </script> -->
   
   <!--Logo-->
   <div class="container" style="background-color: #9BD4FA; display: flex; justify-content: center; max-width: 100%; border: 3px solid rgb(247, 193, 244);">
-    <img src="static/img/aic.png" height="100px">
+    <img src="static/img/cs336.png" height="100px">
+    <!-- <h1 style="color: #FCCCFC; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; font-size: 40px; text-align: center;">CS336 - MULTIMEDIA INFORMATION RETRIEVAL</h1> -->
   </div>
   <!--Tab-->
   {% block tab %}{% endblock %}

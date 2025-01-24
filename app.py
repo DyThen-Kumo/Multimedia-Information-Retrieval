@@ -66,7 +66,6 @@ def upload_image():
 def change_parameter():
     global use_index
     global retrain
-    global top_rerank
     global index_path
     global features_path
     global model
@@ -74,23 +73,21 @@ def change_parameter():
     _use_Index = request.form.get('useIndex') == 'true'
     _linkIndex = request.form.get('linkIndex')
     _retrain = request.form.get('retrain') == 'true'
-    _topReRank = int(request.form.get('topReRank')) if request.form.get('topReRank') else top_rerank
+    set_parameter(_use_index = _use_Index, 
+                  _index_path=_linkIndex, 
+                  _retrain = _retrain)
     
-    use_index, retrain, top_rerank = set_parameter(_use_Index, _retrain, _topReRank)
-    if use_index:
-        index_path = _linkIndex
+    # if use_index:
+    #     index_path = _linkIndex
 
-    print(1, _use_Index, 2, _retrain, 3, _topReRank, 4, _linkIndex)
-    print(11, use_index, 22, retrain, 33, top_rerank, 44, index_path)
-
-    if retrain:
-        features_path = os.path.join(project_path, 'features', 'features_paris_clip_3')
-        print('Model đã retrain!!')
-        model = torch.load(r'C:\Retrieval System\model\paris_clip_3.pth', map_location=torch.device('cpu'))
-    else:
-        features_path = os.path.join(project_path, 'features', 'features_clip')
-        model = CLIPModel.from_pretrained('openai/clip-vit-base-patch32')
-    model.eval()
+    # if retrain:
+    #     features_path = os.path.join(project_path, 'features', 'features_paris_clip_3')
+    #     print('Model đã retrain!!')
+    #     model = torch.load(r'C:\Retrieval System\model\paris_clip_3.pth', map_location=torch.device('cpu'))
+    # else:
+    #     features_path = os.path.join(project_path, 'features', 'features_clip')
+    #     model = CLIPModel.from_pretrained('openai/clip-vit-base-patch32')
+    # model.eval()
 
     # Trả về phản hồi thành công cho front-end
     return jsonify("message: Form submitted successfully!")
@@ -131,7 +128,7 @@ def get_retrieval_by_image():
         image_urls = [url for url in image_files]
         return jsonify(image_urls)
 
-# Tạo file nộp bài
+# Reranking
 @app.route('/confirm_selection', methods=['POST'])
 def confirm_selection():
     selected_images = request.form.getlist('selected_images[]')  # Lấy danh sách các đường dẫn hình ảnh đã chọn

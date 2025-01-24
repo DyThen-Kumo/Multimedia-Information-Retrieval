@@ -20,9 +20,11 @@ def post_retrieval_by_image(input_data):
 
     rank_list, similarity_matrix = None, None
     if use_index:
+        print('Searching by Index')
         index, map_index = load_index(index_path=index_path)
         rank_list, similarity_matrix = retrieval_top_k_by_index(query=query, index=index, map_db=map_index, k=topk)
     else:
+        print('Searching by Features')
         database, map_db = load_features()
         rank_list, similarity_matrix = retrieval_top_k_by_features(query=query, database=database, map_db=map_db, k=topk)
 

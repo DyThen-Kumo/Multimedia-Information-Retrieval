@@ -4,11 +4,20 @@
 {% block content %}
   <div class="container card" style="margin-top: 20px;background-color: #95d3fae6; max-width: 500px; border-radius: 2.5%;">
     <h1 class="card-title text-center" style="color: #FCCCFC; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">Good Morning</h1>
-    <div class="card-body" style="margin-bottom: 20px;">
-      <span class="text-center">Cảm ơn bạn đã sử dụng ứng dụng của chúng tôi!</span><br>
-      <span class="text-center">Chúng tôi rất trân trọng sự tin tưởng và thời gian quý báu mà bạn đã dành cho trải nghiệm này.</span><br>
-      <span class="text-center">Nếu bạn có bất kỳ ý kiến đóng góp hay câu hỏi nào, đừng ngần ngại chia sẻ với chúng tôi.</span><br>
-      <span class="text-center">Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn!</span><br>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+    <script>
+      async function loadMarkdown() {
+          const response = await fetch('C:\Retrieval System\Multimedia-Information-Retrieval\README.md'); // Đường dẫn file .md
+          const markdownText = await response.text();
+
+          const converter = new showdown.Converter();
+          const htmlContent = converter.makeHtml(markdownText);
+
+          document.getElementById('preview').innerHTML = htmlContent;
+      }
+
+      // Tự động tải file Markdown khi trang web mở
+      loadMarkdown();
+  </script>
   </div>
 {% endblock %}

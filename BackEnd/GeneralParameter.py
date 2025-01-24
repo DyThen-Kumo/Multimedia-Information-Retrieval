@@ -6,12 +6,34 @@ project_path = os.path.dirname(github_path) # c:\Retrieval System\
 gt_path = os.path.join(project_path, 'data', 'paris_120310_gt')
 data_path = os.path.join(github_path, 'static', 'data', 'paris')
 
-def set_parameter(_use_index = False, _retrain = False, _top_rerank = 10):
-    return _use_index, _retrain, _top_rerank
+def set_parameter(_use_index = False, 
+                  _index_path=os.path.join(github_path, 'index', 'feature_clip.pkl'), 
+                  _retrain = False, 
+                  ):
+    global use_index
+    global retrain
+    global index_path
+    global features_path
+    global model
 
-use_index, retrain, top_rerank = set_parameter()
-print(use_index, retrain, top_rerank)
-index_path = os.path.join(github_path, 'index', 'feature_clip.pkl')
+    if _use_index:
+        index_path = _index_path
+    if _retrain:
+        features_path = os.path.join(project_path, 'features', 'features_paris_clip_3')
+        print('Model đã re train!!')
+        model = torch.load(r'C:\Retrieval System\model\paris_clip_3.pth', map_location=torch.device('cpu'))
+    else:
+        features_path = os.path.join(project_path, 'features', 'features_clip')
+        model = CLIPModel.from_pretrained('openai/clip-vit-base-patch32')
+    model.eval()
+    print('Thay đổi thành công')
+    return
+
+use_index, retrain = True, True
+# set_parameter()
+
+print(use_index, retrain)
+index_path = os.path.join(github_path, 'index', 'IndexIVFFlat_paris_clip.pkl')
 
 if retrain:
     features_path = os.path.join(project_path, 'features', 'features_paris_clip_3')
@@ -24,8 +46,10 @@ processor = CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32')
 model = None
 if retrain:
     print('Model đã re train!!')
+    print('Feature path:',features_path)
     model = torch.load(r'C:\Retrieval System\model\paris_clip_3.pth', map_location=torch.device('cpu'))
 else:
+    print('Feature path:',features_path)
     model = CLIPModel.from_pretrained('openai/clip-vit-base-patch32')
 
 model.eval()

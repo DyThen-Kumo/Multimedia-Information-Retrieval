@@ -52,11 +52,12 @@
         event.preventDefault();
 
         const formData = new FormData();
-        formData.append('number_image', $('#InputNumberImages').val());
-        formData.append('image', $('#InputImage')[0].files[0]);
+        formData.append('num_images', $('#InputNumberImages').val());
+        formData.append('language', $('#language').val());
+        formData.append('input_text', $('#InputText').val());
         
         $.ajax({
-            url: '/get-retrieval-by-image',
+            url: '/get-retrieval-by-text',
             type: 'POST',
             data: formData,
             processData: false,

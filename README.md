@@ -39,17 +39,23 @@ Kraft, and Justin Zobel, editors, SIGIR 2001: Proceedings of the 24th Annual Int
 Conference on Research and Development in Information Retrieval, September 9-13, 2001, New Orleans,
 Louisiana, USA, pages 275–284. ACM, 2001. doi: 10.1145/383952.384007. URL https://doi.org/10.
 1145/383952.384007.
+
 [2] Elias Bassani and Luca Romelli. ranx.fuse: A python library for metasearch. In CIKM, pages 4808–4812. ACM,
 2022. doi: 10.1145/3511808.3557207.
+
 [3] Gordon V. Cormack, Charles L. A. Clarke, and Stefan Büttcher. Reciprocal rank fusion outperforms condorcet
 and individual rank learning methods. In SIGIR, pages 758–759. ACM, 2009.
+
 [4] Matthijs Douze, Alexandr Guzhva, Chengqi Deng, Jeff Johnson, Gergely Szilvasy, Pierre-Emmanuel Mazaré,
 Maria Lomeli, Lucas Hosseini, and Hervé Jégou. The faiss library. 2024.
+
 [5] Edward A. Fox and Joseph A. Shaw. Combination of multiple searches. In TREC, volume 500-215 of NIST
 Special Publication, pages 243–252. National Institute of Standards and Technology (NIST), 1993.
+
 [6] Herve Jégou, Matthijs Douze, and Cordelia Schmid. Product quantization for nearest neighbor search. IEEE
 Transactions on Pattern Analysis and Machine Intelligence, 33(1):117–128, 2011. doi: 10.1109/TPAMI.2010.
 57.
+
 [7] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry,
 Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, and Ilya Sutskever. Learning transferable
 visual models from natural language supervision. In Marina Meila and Tong Zhang, editors, Proceedings of the

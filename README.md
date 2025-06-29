@@ -30,8 +30,11 @@ Output: A set of images that is relevant to information need.
 * The relevant files corresponding to each query are saved in the form _ok.txt and _good.txt
 
 ## Solution and Experiment
-* Detail in the report.
+* Detail in the [report](Report.pdf).
 * You should add data to "/static/data" and run app.py to deploy the project.
+
+## Demo
+* You can see demo at [Youtube](https://www.youtube.com/watch?v=W8_yNJzeGYQ)
 
 ## Reference
 [1] Javed A. Aslam and Mark H. Montague. Models for metasearch. In W. Bruce Croft, David J. Harper, Donald H.

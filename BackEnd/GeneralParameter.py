@@ -5,6 +5,7 @@ github_path = os.path.dirname(os.path.dirname(current_file_path)) # c:\Retrieval
 project_path = os.path.dirname(github_path) # c:\Retrieval System\
 gt_path = os.path.join(project_path, 'data', 'paris_120310_gt')
 data_path = os.path.join(github_path, 'static', 'data', 'paris')
+# data_path = os.path.join(github_path, 'static', 'paris')
 
 def set_parameter(_use_index = False, 
                   _index_path=os.path.join(github_path, 'index', 'feature_clip.pkl'), 
